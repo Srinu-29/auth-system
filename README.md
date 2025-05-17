@@ -112,9 +112,5 @@ Security Notes
 *   Input validation is performed on both client and server sides
 *   MongoDB connection strings should be kept secret (use environment variables)
 
-License
--------
 
-This project is licensed under the MIT License.
 
-© 2025 TechLearn AUTH-SYSTEM. All rights reserved.
