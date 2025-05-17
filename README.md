@@ -37,12 +37,12 @@ Setup Instructions
 
 1\. Clone the repository
 
-    git clone https://github.com/yourusername/techlearn-auth-system.git
-    cd techlearn-auth-system
+    git clone https://github.com/Srinujalaneela/Auth-system.git
+    cd Auth-system
 
 2\. Install dependencies
 
-    npm install
+    npm install express mongoose bcrypt express-session ejs dotenv
 
 3\. Create a .env file in the root directory
 
@@ -52,7 +52,7 @@ Setup Instructions
 
 4\. Start the server
 
-    npm start
+    npm server
 
 5\. Access the application
 
