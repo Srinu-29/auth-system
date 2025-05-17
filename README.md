@@ -77,18 +77,10 @@ Project Structure
     │   ├── signin.ejs              # Sign in EJS template
     │   └── signup.ejs              # Sign up EJS template
     ├── public/
-    │   ├── css/
-    │   │   └── styles.css          # CSS styles
-    │   ├── js/
-    │   │   └── main.js             # Client-side JavaScript
+    │   |           
     │   └── images/                 # Image assets folder
-    ├── config/
-    │   └── db.js                   # Database configuration
-    ├── middleware/
-    │   └── auth.js                 # Authentication middleware
-    ├── routes/
-    │   └── auth.js                 # Authentication routes
-    ├── dashboard.html              # Standalone dashboard HTML file
+    ├                
+    |            
     ├─-- .env                       # for  mongodb credentials
     |─-- .gitignore                 # Git ignore file
     ├── package.json                # Project dependencies
