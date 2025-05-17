@@ -48,7 +48,8 @@ Setup Instructions
 
     PORT=5000
     MONGODB_URI=mongodb+srv://username:password@cluster0.example.mongodb.net/techlearn
-    SESSION_SECRET=your_secure_random_string
+    SESSION_SECRET=your_secure_random_string 
+    username and password will be available in the .env file
 
 4\. Start the server
 
