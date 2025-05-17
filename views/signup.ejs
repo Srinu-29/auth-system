@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .error { color: red; }
+    .relative { position: relative; }
+    .toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold text-center mb-6">Sign Up</h2>
+    <% if (error) { %>
+      <p class="error text-red-500 mb-4 text-center"><%= error %></p>
+    <% } %>
+    <form id="signup-form" action="/signup" method="POST">
+      <div class="mb-4">
+        <input type="text" name="name" placeholder="Name" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#070054]" value="<%= locals.name || '' %>">
+      </div>
+      <div class="mb-4">
+        <input type="email" name="email" placeholder="Email" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#070054]" value="<%= locals.email || '' %>">
+      </div>
+      <div class="mb-4">
+        <input type="text" name="mobile_number" placeholder="Mobile Number" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#070054]" value="<%= locals.mobile_number || '' %>">
+      </div>
+      <div class="mb-4">
+        <select name="gender" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#070054]">
+          <option value="" disabled <%= !locals.gender ? 'selected' : '' %>>Select Gender</option>
+          <option value="Male" <%= locals.gender === 'Male' ? 'selected' : '' %>>Male</option>
+          <option value="Female" <%= locals.gender === 'Female' ? 'selected' : '' %>>Female</option>
+          <option value="Other" <%= locals.gender === 'Other' ? 'selected' : '' %>>Other</option>
+        </select>
+      </div>
+      <div class="mb-4 relative">
+        <input type="password" name="password" id="password" placeholder="Password" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#070054]">
+        <span id="toggle-password" class="toggle-password">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+        </span>
+        <div id="password-errors" class="text-red-500 text-sm mt-1">
+          <% if (locals.passwordErrors && passwordErrors.length > 0) { %>
+            <% passwordErrors.forEach(error => { %>
+              <p><%= error %></p>
+            <% }) %>
+          <% } %>
+        </div>
+      </div>
+      <div class="mb-4 relative">
+        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#070054]">
+        <span id="toggle-confirm-password" class="toggle-password">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+        </span>
+        <p id="confirm-password-error" class="error text-red-500 text-sm mt-1 hidden">Passwords do not match</p>
+      </div>
+      <button type="submit" class="w-full bg-[#070054] text-white p-2 rounded hover:bg-[#0a0078] transition-colors">Sign Up</button>
+    </form>
+    <p class="mt-4 text-center">Already have an account? <a href="/signin" class="text-[#070054] hover:underline">Sign In</a></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('signup-form');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+    const passwordErrorsDiv = document.getElementById('password-errors');
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+    const togglePassword = document.getElementById('toggle-password');
+    const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
+
+    // Toggle password visibility
+    togglePassword.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      togglePassword.innerHTML = isPassword
+        ? `<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"></path></svg>`
+        : `<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`;
+    });
+
+    toggleConfirmPassword.addEventListener('click', () => {
+      const isPassword = confirmPasswordInput.type === 'password';
+      confirmPasswordInput.type = isPassword ? 'text' : 'password';
+      toggleConfirmPassword.innerHTML = isPassword
+        ? `<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"></path></svg>`
+        : `<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`;
+    });
+
+    // Real-time password validation
+    function validatePassword() {
+      const password = passwordInput.value;
+      const errors = [];
+
+      if (password.length < 8) errors.push("Password must be at least 8 characters");
+      if (!/[a-z]/.test(password)) errors.push("Password must contain at least 1 lowercase letter");
+      if (!/[A-Z]/.test(password)) errors.push("Password must contain at least 1 uppercase letter");
+      if (!/\d/.test(password)) errors.push("Password must contain at least 1 number");
+      if (!/[!@#$%^&*_-]/.test(password)) errors.push("Password must contain at least 1 special character (!@#$%^&*_-)");
+      if (password !== confirmPasswordInput.value && confirmPasswordInput.value) {
+        confirmPasswordError.classList.remove('hidden');
+      } else {
+        confirmPasswordError.classList.add('hidden');
+      }
+
+      passwordErrorsDiv.innerHTML = errors.map(error => `<p>${error}</p>`).join('');
+      return errors.length === 0;
+    }
+
+    passwordInput.addEventListener('input', validatePassword);
+    confirmPasswordInput.addEventListener('input', validatePassword);
+
+    // Form submission validation
+    form.addEventListener('submit', (e) => {
+      if (!validatePassword() || passwordInput.value !== confirmPasswordInput.value) {
+        e.preventDefault();
+        console.log("Form submission prevented due to validation errors");
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          confirmPasswordError.classList.remove('hidden');
+        }
+      } else {
+        console.log("Form validation passed, submitting...");
+      }
+    });
+  </script>
+</body>
+</html>
