@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 const path = require("path");
 const session = require("express-session");
 const crypto = require('crypto');
+const serverless = require('serverless-http');
+
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
@@ -229,7 +231,7 @@ app.post("/signin", async (req, res) => {
     res.render("signin", { error: "Server error: " + error.message });
   }
 });
-
+module.exports.handler = serverless(app);
 // ==== START SERVER ====
 
 const PORT = process.env.PORT || 5000;
